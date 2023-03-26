@@ -2,11 +2,9 @@ import "./App.css";
 import Employee from "./components/Employee";
 
 function App() {
-  console.log("we are about to list an employees");
   const showEmployees = true;
   return (
     <div className="App">
-      {console.log("inside the return")}
       {showEmployees ? (
         <>
           <Employee />
