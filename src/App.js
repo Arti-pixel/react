@@ -1,13 +1,14 @@
 import "./index.css";
-import Employee from "./components/Employee.js";
-import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import AddEmployee from "./components/AddEmployee.js";
-import EditEmployee from "./components/EditEmployee.js";
+// import Employee from "./components/Employee.js";
+// import { useState } from "react";
+// import { v4 as uuidv4 } from "uuid";
+// import AddEmployee from "./components/AddEmployee.js";
+// import EditEmployee from "./components/EditEmployee.js";
 import Header from "./components/Header.js";
 import Employees from "./pages/Employees.js";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Customers from "./pages/Customers";
+import Dictionary from "./components/Dictionary";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Header>
         <Routes>
           <Route path="/employees" element={<Employees />} />
+          <Route path="/dictionary" element={<Dictionary />} />
           <Route path="/customers" element={<Customers />} />
         </Routes>
       </Header>
