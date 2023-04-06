@@ -1,46 +1,28 @@
 import { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import DefinitionSearch from "../components/DefinitionSearch";
 import NotFound from "../components/NotFound";
+import useFetch from "../hooks/UseFetch";
 
 export default function Definition() {
-  const [word, setWord] = useState([]);
-  const [notFound, setNotFound] = useState(false);
-  const [error, setError] = useState(false);
-
   let { search } = useParams();
+
   const navigate = useNavigate();
+  const location = useLocation();
+  const {
+    request,
+    data: [{ meanings: word }] = [{}],
+    errorStatus,
+  } = useFetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + search, {
+    method: "GET",
+  });
 
   useEffect(() => {
-    // const url = "https://frmergmrkgemfewefewfhncvcbvcreg.com";
-    // const url = "https://httpstat.us/500";
-    const url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + search;
-    fetch(url)
-      .then((response) => {
-        if (response.status === 404) {
-          setNotFound(true);
-        } else if (response.status === 401) {
-          navigate("/login");
-        } else if (response.status === 500) {
-          //   setServerError(true);
-        }
-        if (!response.ok) {
-          setError(true);
-
-          throw new Error("Something went wrong");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setWord(data[0].meanings);
-      })
-      .catch((e) => {
-        console.log(e.message);
-      });
+    request();
   }, []);
 
-  if (notFound === true) {
+  if (errorStatus === 404) {
     return (
       <>
         <NotFound />
@@ -49,7 +31,7 @@ export default function Definition() {
     );
   }
 
-  if (error === true) {
+  if (errorStatus) {
     return (
       <>
         <p>Something went wrong, try again?</p>

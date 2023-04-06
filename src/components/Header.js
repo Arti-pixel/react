@@ -1,14 +1,14 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from "react";
+import { useContext, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { NavLink } from "react-router-dom";
+import { LoginContext } from "../App";
 
 const navigation = [
   { name: "Employees", href: "/employees" },
   { name: "Customers", href: "/customers" },
   { name: "Dictionary", href: "/dictionary" },
-  { name: "Calendar", href: "/other2" },
 ];
 
 function classNames(...classes) {
@@ -16,6 +16,8 @@ function classNames(...classes) {
 }
 
 export default function Header(props) {
+  const [loggedIn, setLoggedIn] = useContext(LoginContext);
+
   return (
     <>
       <Disclosure as="nav" className="bg-gray-800">
@@ -53,6 +55,26 @@ export default function Header(props) {
                           {item.name}
                         </NavLink>
                       ))}
+
+                      {loggedIn ? (
+                        <NavLink
+                          to={"/login"}
+                          onClick={() => {
+                            setLoggedIn(false);
+                            localStorage.clear();
+                          }}
+                          className="px-3 py-2 rounded-md text-sm font-medium no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+                        >
+                          Logout
+                        </NavLink>
+                      ) : (
+                        <NavLink
+                          to={"/login"}
+                          className="px-3 py-2 rounded-md text-sm font-medium no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+                        >
+                          Login
+                        </NavLink>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -86,6 +108,25 @@ export default function Header(props) {
                     {item.name}
                   </NavLink>
                 ))}
+                {loggedIn ? (
+                  <NavLink
+                    to={"/login"}
+                    onClick={() => {
+                      setLoggedIn(false);
+                      localStorage.clear();
+                    }}
+                    className="block px-3 py-2 rounded-md text-base font-medium no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+                  >
+                    Logout
+                  </NavLink>
+                ) : (
+                  <NavLink
+                    to={"/login"}
+                    className="block px-3 py-2 rounded-md text-base font-medium no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+                  >
+                    Login
+                  </NavLink>
+                )}
               </div>
             </Disclosure.Panel>
           </>
